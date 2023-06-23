@@ -110,7 +110,7 @@ export default {
          
         
         async criaAcesso(e){
-            e.preventDefault()    
+           e.preventDefault()
             try {
                 var output =  new Command('hostname').execute();
                 var valor = (await output).stdout
@@ -127,9 +127,18 @@ export default {
                    Hostname : valor
                 }
         
-               console.log(data)
+              const dataJson = JSON.stringify(data)
+
+              const req = await fetch('http://localhost:8000/Cadastro',{
+                method:"POST",
+                headers:{'Content-Type':'application/json',
+                    'Access-Control-Allow-Origin':'*',
+                    'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS'},
+                body: dataJson
+              })
         
-        
+              const res = await req.json()
+              console.log(res)
         
             }
     }
