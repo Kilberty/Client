@@ -82,17 +82,12 @@
 
 </template>
  
-<script src="" >
+<script>
 
 import Menu from './Menu.vue';
 import {Command} from '@tauri-apps/api/shell'
 
    
-
-   
-   
-  
-
 export default {
     name:'Infra',
     components:{
