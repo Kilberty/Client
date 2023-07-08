@@ -5,10 +5,6 @@
       <li>
           <button class="btn btn-link" @click="DirecionaRotaInfra()" > Infra</button>
       </li>
-      <li>
-        <button class="btn btn-link" @click="DirecionaRotaServ()" > Serviços</button>
-      </li>
-     
     </ul>
 </div>
 
@@ -26,9 +22,7 @@ export default {
         DirecionaRotaInfra(){
             router.push('/Infra')
         },
-        DirecionaRotaServ(){
-            router.push('/Serv')
-        }
+       
     }
 }
 </script>

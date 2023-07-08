@@ -3,10 +3,7 @@
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 use tauri::{CustomMenuItem,SystemTrayEvent,SystemTrayMenu, SystemTrayMenuItem, SystemTray};
-use tauri::{Manager, WindowBuilder};
-
-
-
+use tauri::{Manager};
 
 
 fn main() {
@@ -15,7 +12,7 @@ fn main() {
     let quit = CustomMenuItem::new("Fechar".to_string(),"Fechar");
 
     
-    
+  
     let tray_menu = SystemTrayMenu::new()
     .add_item(show)
     .add_native_item(SystemTrayMenuItem::Separator)
@@ -23,7 +20,7 @@ fn main() {
     let tray = SystemTray::new().with_menu(tray_menu);
  
     tauri::Builder::default()
-
+ 
     .system_tray(tray)
     .on_window_event(|event| match event.event() {
         
@@ -38,14 +35,9 @@ fn main() {
             match id.as_str(){
                                
                 "Configurar"=>{
-                   
-                    let window = app.get_window("main").unwrap();
-                  
+                   let window = app.get_window("main").unwrap();
                     window.show();
-                    
-                   
-                 
-                },
+                    },
                 "Fechar"=>{
                     std::process::exit(0)
                 },
@@ -56,7 +48,6 @@ fn main() {
         _ =>{}
       
     })
-    
     .run(tauri::generate_context!())
     .expect("error");
     

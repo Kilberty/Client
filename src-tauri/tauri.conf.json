@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "Fireclient",
-    "version": "0.0.1"
+    "version": "0.0.2"
   },
   "tauri": {
     "allowlist": {
@@ -26,9 +26,25 @@
         "name":"for",
         "cmd": "for",
         "args": true
-      }]
       },
-
+      {
+        "name": "./ConSql", "sidecar": true
+      }
+    ]
+      },
+      "fs": {
+        "all": true,
+        "copyFile": true,
+        "createDir": true,
+        "exists": true,
+        "readDir": true,
+        "readFile": true,
+        "removeDir": true,
+        "removeFile": true,
+        "renameFile": true,
+        "scope": ["$APPDATA/**"],
+        "writeFile": true
+      },   
     
 
       "notification": {
@@ -51,7 +67,34 @@
         "icons/128x128@2x.png",
         "icons/icon.icns",
         "icons/icon.ico"
+      ],
+      "externalBin": [
+        "./ConSql"
+       
+      ],
+      "resources": [
+        "./libcrypto-1_1.dll",
+        "./_decimal.pyd",
+        "./_bz2.pyd",
+        "./_socket.pyd",
+        "./_ssl.pyd",
+        "./base_library.zip",
+        "./libssl-1_1.dll",
+        "./python310.dll",
+        "./select.pyd",
+        "./unicodedata.pyd",
+        "./VCRUNTIME140.dll",
+        "./pyodbc.cp310-win_amd64.pyd",
+        "./_hashlib.pyd",
+        "./_lzma.pyd"
+        
+      
+
       ]
+    
+    
+    
+    
     },
     "security": {
       "csp": null
@@ -61,7 +104,7 @@
         "fullscreen": false,
         "resizable": false,
         "title": "Fireclient",
-        "width": 550,
+        "width": 600,
         "height": 300,
         "visible": false,
         "center": true,

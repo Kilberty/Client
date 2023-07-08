@@ -4,71 +4,23 @@
         <div class="col-2"><Menu/></div>
         <div class="col-10" style="background-color: white;" >
           <div class="container-fluid">
-            <form @submit="criaAcesso">
-                 <div class="row">
-                    <div class="col-7">
-                        <div class="form-group">
-                    <label for="tipo" class="col-sm-2 control-label texto "  >Tipo : </label>
-                    
-                        <select  placeholder="Selecione" class="form-select form-select-sm " v-model="tipo" style="width: 100%;" name="tipo"  id="tipo" >
-                            <option  value="Estacao" >Estação</option>
-                            <option value="Servidor">Servidor</option>
-                        </select>
-                     
-                </div>   
-                    </div>
-                    <div class="col-5">
-                       
-                        <div class="form-group">
-                            <label for="codcliente" class="col-sm-2 control-label texto "  >Código : </label>
-                             
-                            <input name="codcliente" id="codcliente" v-model="codcliente"  placeholder="Cód Cliente" class="form-control" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "5"/>
-                       </div>
-                        
-                    </div>
-                 </div>
-                                   
+           <div class="row justify-content-end ">
+                <div class="col"></div>
+                <div class="col"></div>
+                <div class="col"></div>    
+                <div class="col"></div>
+                
+              <div class="col">
+                <button class="btn btn-outline-success" @click="GeraEmpresa()" style="height: 40px;" > Novo </button>
+              </div>
+            
              
-                                              
-                <div class="form-group" style="margin-top: 10%;" >
-                    <div class="row">
-                        <div class="col-7">
-                            <div class="form-group">
-                                <label  class="col-sm-2 control-label texto"  >Anydesk :</label>
-                                <input style="width: 100%;" name="anydesk" id="anydesk"  placeholder="Anydesk" v-model="anydesk" class="form-control" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "10"
-/>
-                            </div>
-                        </div>
-                        <div class="col-5">
-                            <div class="form-group">
-                                <label  class="col-sm-2 control-label texto"  >Senha :</label>
-                                <input type="text" class="form-control" v-model="senha" name="senha" id="senha" placeholder="Senha" >
-                            </div>
-                        </div>
-                    </div>
-                </div>   
+        
                
-                <div class="form-group" style="margin-top: 20%;">
-                    <div class="row">
-                        <div class="col"></div>
-                        <div class="col-8"></div>
-                        <div class="col"><button type="submit" class="btn btn-dark" >Salvar</button></div>
-                    </div>
-                </div>
-                          
-                           
-                        
-                         
+           </div> 
             
             
-            
-            
-            
-            
-            
-            </form>
-               
-            </div>
+           </div>
           </div>       
           
 
@@ -86,26 +38,33 @@
 
 import Menu from './Menu.vue';
 import {Command} from '@tauri-apps/api/shell'
+import {writeTextFile, BaseDirectory} from '@tauri-apps/api/fs'
+import Config from './Config.vue';
+import { encode } from 'punycode';
 
    
 export default {
     name:'Infra',
     components:{
-        Menu
+        Menu,
+        Config
     },
     data(){
         return{
-        tipo :"",
-        anydesk : "",
-        codcliente : "",
-        senha : "",
+        user :"sa",
+        database : "BaseNhoqueCiaAlimentos",
+        Server : "localhost",
+        pwd : "qaz@123",
+        port: 5433
     }
     },
     methods:{
-         
+       
         
         async criaAcesso(e){
-           e.preventDefault()
+          
+            
+            e.preventDefault()
             try {
                 var output =  new Command('hostname').execute();
                 var valor = (await output).stdout
@@ -115,10 +74,10 @@ export default {
                     }
                
                const data = {
-                   Cod: this.codcliente,
-                   Tipo: this.tipo,
-                   Anydesk: this.anydesk,
-                   Senha: this.senha,
+                   server: this.Server,
+                   user: this.user,
+                   db: this.database,
+                   pwd: this.pwd,
                    Hostname : valor
                 }
         
@@ -128,13 +87,43 @@ export default {
                 method:"POST",
                 headers:{'Content-Type':'application/json',
                     'Access-Control-Allow-Origin':'*',
-                    'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS'},
+                    'Access-Control-Allow-Methods':'POST'},
                 body: dataJson
               })
         
               const res = await req.json()
               console.log(res)
         
+            },
+             async GeraEmpresa(){
+                
+                
+                
+                const data = {
+                   server: this.Server,
+                   user: this.user,
+                   db: this.database,
+                   pwd: this.pwd,
+                   port: this.port
+                  }   
+                             
+                 const Json = JSON.stringify(data) 
+
+                await writeTextFile('conf.json', Json, { dir: BaseDirectory.AppConfig });
+                const start = Command.sidecar('./ConSql',["-l"],{encoding:'utf-8'}).execute()
+               
+
+               
+                console.log(start)
+                         
+                       
+         
+               
+
+               
+
+
+
             }
     }
     

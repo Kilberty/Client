@@ -1,7 +1,7 @@
 import TelaLogin from '../components/TelaLogin.vue'
 import TelaLogado from '../components/TelaLogado.vue'
 import Infra from '../components/Infra.vue'
-import Serv from '../components/Serv.vue'
+
 import {createRouter,createWebHashHistory} from "vue-router";
 
 
@@ -24,12 +24,7 @@ const router = createRouter({
             name: 'Infra',
             component: Infra
         },
-        {
-            path: '/Serv',
-            name: 'Serv',
-            component: Serv
-        },
-        {
+       {
             path: '/Logado',
             name: 'Logado',
             component: TelaLogado
