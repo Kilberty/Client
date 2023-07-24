@@ -4,20 +4,29 @@
         <div class="col-2"><Menu/></div>
         <div class="col-10" style="background-color: white;" >
           <div class="container-fluid">
-           <div class="row justify-content-end ">
+           <div class="row justify-content-end " style="height: 50%;" >
                 <div class="col"></div>
                 <div class="col"></div>
-                <div class="col"></div>    
                 <div class="col"></div>
-                
-              <div class="col">
+                <div class="col"></div>      
+               <div class="col">
                 <button class="btn btn-outline-success" @click="GeraEmpresa()" style="height: 40px;" > Novo </button>
-              </div>
-            
-             
-        
-               
-           </div> 
+            </div>
+         
+          <div class="accordion" style="margin-top: 10%;" >
+             <div class="accordion-item" v-for="nomes in Empresas" :key="nomes.CGC">
+               <div class="accordion-header">
+                <button class="accordion button" @click="MostraNome" :value="nomes.ID" style="width: 100%;" type="button">{{ nomes.Fantasia}} - {{ nomes.CGC }} </button>
+               </div>
+                
+            </div>
+          </div>
+          
+
+
+
+
+        </div> 
             
             
            </div>
@@ -38,9 +47,12 @@
 
 import Menu from './Menu.vue';
 import {Command} from '@tauri-apps/api/shell'
-import {writeTextFile, BaseDirectory} from '@tauri-apps/api/fs'
+import {BaseDirectory, readTextFile, writeTextFile} from '@tauri-apps/api/fs'
+import router from '../routes';
 import Config from './Config.vue';
-import { encode } from 'punycode';
+
+
+
 
    
 export default {
@@ -51,13 +63,16 @@ export default {
     },
     data(){
         return{
-        user :"sa",
-        database : "BaseNhoqueCiaAlimentos",
-        Server : "localhost",
-        pwd : "qaz@123",
-        port: 5433
+        Empresas:"",
+ 
+
     }
     },
+    created: function(){
+      this.EmpresaConfig()
+    },
+      
+    
     methods:{
        
         
@@ -96,38 +111,36 @@ export default {
         
             },
              async GeraEmpresa(){
+                router.push('/Banco')   
+            },
+
+            async EmpresaConfig(){
+                 Command.sidecar('./SelectConfig').execute() 
+                 const Registradas = await readTextFile('EmpresaBanco.json',{dir:BaseDirectory.AppConfig})
+                 const RegistradasJson = JSON.parse(Registradas)
+                 this.Empresas = RegistradasJson
+                 Command.sidecar('./CGC').execute()
                 
-                
-                
-                const data = {
-                   server: this.Server,
-                   user: this.user,
-                   db: this.database,
-                   pwd: this.pwd,
-                   port: this.port
-                  }   
-                             
-                 const Json = JSON.stringify(data) 
 
-                await writeTextFile('conf.json', Json, { dir: BaseDirectory.AppConfig });
-                const start = Command.sidecar('./ConSql',["-l"],{encoding:'utf-8'}).execute()
+            },
+            async MostraNome(e){
+             const buttonClickedValue = e.target.value
+               const idEmpresa = {
+                 'id': buttonClickedValue,
+                 }
                
-
-               
-                console.log(start)
-                         
-                       
-         
-               
-
-               
-
-
-
+                const Json = JSON.stringify(idEmpresa)
+                console.log(idEmpresa)
+                await writeTextFile('id.json', Json, { dir: BaseDirectory.AppConfig});
+                Command.sidecar('./SelectMaquinas').execute()
+                router.push('/Maquinas')
             }
+
+
+
     }
-    
-}
+}   
+
 </script>
 
 
@@ -138,6 +151,9 @@ export default {
     padding: 0;
 }
 
+.col{
+    height: 10%;
+}
 .row{
     height: 100%;
     width:100%;

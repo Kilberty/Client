@@ -36,7 +36,7 @@ fn main() {
                                
                 "Configurar"=>{
                    let window = app.get_window("main").unwrap();
-                    window.show();
+                   let _ = window.show();
                     },
                 "Fechar"=>{
                     std::process::exit(0)

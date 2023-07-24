@@ -29,6 +29,7 @@
 
 <script>
 import router from '../routes';
+
 export default  {
   name:'TelaLogin',
   methods:{
@@ -39,8 +40,8 @@ export default  {
   console.log(Senha)
 
   if(Senha === 'fireconfig'){
-   router.push('/Logado')
-  
+   
+    router.push('/Logado')
   }else{
    alert('Senha Incorreta')
   }

@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "Fireclient",
-    "version": "0.0.2"
+    "version": "0.0.8"
   },
   "tauri": {
     "allowlist": {
@@ -29,6 +29,24 @@
       },
       {
         "name": "./ConSql", "sidecar": true
+      },
+      {
+        "name": "./Select", "sidecar": true
+      },
+      {
+        "name": "./Create", "sidecar": true
+      },
+      {
+        "name": "./CGC", "sidecar": true
+      },
+      {
+        "name": "./SelectConfig", "sidecar": true
+      },
+      {
+        "name": "./Maquinas", "sidecar": true
+      },
+      {
+        "name": "./SelectMaquinas","sidecar": true
       }
     ]
       },
@@ -69,7 +87,13 @@
         "icons/icon.ico"
       ],
       "externalBin": [
-        "./ConSql"
+        "./ConSql",
+        "./Select",
+        "./Create",
+        "./CGC",
+        "./SelectConfig",
+        "./Maquinas",
+        "./SelectMaquinas"
        
       ],
       "resources": [

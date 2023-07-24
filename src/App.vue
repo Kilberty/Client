@@ -1,4 +1,4 @@
-<script lang="ts" >
+<script >
 import { defineComponent } from 'vue';
 import TelaLogin from './components/TelaLogin.vue'
 import TelaLogado from './components/TelaLogado.vue';
